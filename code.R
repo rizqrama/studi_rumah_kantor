@@ -83,3 +83,20 @@ plot2 <- treemap(tt_vul2,
                  )
 
 ggsave("visualisasi/treemap.png", width = 361.421, height = 203.2, units = "mm", dpi =320)
+
+# plotting 3 ----
+packing <- circleProgressiveLayout(tt_vul2$Jumlah, sizetype='area')
+packing$radius <- 0.95*packing$radius
+tt_vul2 <- cbind(tt_vul2, packing)
+gg <- circleLayoutVertices(packing, npoints=50)
+
+ggplot() +
+  geom_polygon(data =gg, aes(x, y, group = id, fill=as.factor(id)), alpha = 0.6) +
+  geom_text(data = tt_vul2, aes(x, y, size = Jumlah, label = jenis_kendaraan)) +
+  scale_size_continuous(range = c(1,4)) +
+  theme_void() +
+  theme(legend.position = "none") +
+  coord_equal() +
+  scale_fill_paletteer_d("IslamicArt::samarqand")
+
+ggsave("visualisasi/treemap.png", width = 300, height = 300, units = "mm", dpi =320)
