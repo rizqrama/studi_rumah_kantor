@@ -2,9 +2,9 @@
 pacman::p_load(pacman, readr, here, janitor, tidyverse, ggExtra, paletteer, dplyr)
 
 # load data ----
-data0 <- readxl::read_xlsx("data/Phone number.xlsx")
+data0 <- readxl::read_xlsx("data/Phone number.xlsx") %>% clean_names()
 
-# data wrangling
+# data wrangling 1 ----
 
 tt_vul <- data0 %>%
   select(transport_type, vulnerable_group) %>% 
@@ -19,6 +19,9 @@ tt_vul <- data0 %>%
       is.na(transport_type) == TRUE ~ "tidak ada data",
       TRUE ~ "campuran")
   )
+
+
+# data wrangling 2 ----
 
 # plotting 1 ----
 # base
@@ -95,8 +98,33 @@ ggplot() +
   geom_text(data = tt_vul2, aes(x, y, size = Jumlah, label = jenis_kendaraan)) +
   scale_size_continuous(range = c(1,4)) +
   theme_void() +
-  theme(legend.position = "none") +
   coord_equal() +
-  scale_fill_paletteer_d("IslamicArt::samarqand")
+  scale_fill_paletteer_d("ghibli::PonyoMedium") +
+  labs(title = "Sebaran Penggunaan Moda Transportasi",
+       subtitle = "248 responden dalam wilayah studi Jabodetabek") +
+  theme(legend.position = "none",
+        plot.title = element_text(size = 12, face = "bold"),
+        plot.subtitle = element_text(size = 8, face = "italic"))
 
-ggsave("visualisasi/treemap.png", width = 300, height = 300, units = "mm", dpi =320)
+ggsave("visualisasi/bubblemap.png", width = 100, height = 100, units = "mm", dpi =300)
+
+# plotting 4 ----
+data0 %>% ggplot() +
+  geom_histogram(aes(x=age), binwidth = 2, fill="#69b3a2", color="#e9ecef", alpha=0.9) +
+  labs(
+    title = "Distribusi Usia Responden",
+    subtitle = "248 responden dalam wilayah studi Jabodetabek",
+    x = "Usia",
+    y = "Jumlah"
+  ) +
+  theme_ipsum() +
+  theme(
+    plot.title = element_text(size = 18, face = "bold"),
+    plot.subtitle = element_text(size = 12, face = "italic"),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.text.x = element_text(color = "grey50", angle = 40),
+    axis.text.y = element_text(color = "grey50", face = "bold")
+  )
+ggsave("visualisasi/usia.png", width = 9, height = 6, dpi = "retina")
+
