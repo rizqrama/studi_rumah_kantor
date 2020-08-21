@@ -119,12 +119,12 @@ data0 %>% ggplot() +
   ) +
   theme_ipsum() +
   theme(
-    plot.title = element_text(size = 18, face = "bold"),
+    plot.title = element_text(size = 16, face = "bold"),
     plot.subtitle = element_text(size = 12, face = "italic"),
     panel.grid.major.x = element_blank(),
     panel.grid.minor = element_blank(),
-    axis.text.x = element_text(color = "grey50", angle = 40),
-    axis.text.y = element_text(color = "grey50", face = "bold")
+    axis.text.x = element_text(size = 10, color = "grey50", angle = 40),
+    axis.text.y = element_text(size = 10, color = "grey50", face = "bold")
   )
 ggsave("visualisasi/usia.png", width = 9, height = 6, dpi = "retina")
 
